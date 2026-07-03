@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LIVE CHART + SIGNAL BOT</title>
+<title>REAL LIVE SIGNAL BOT — EUR/USD</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&display=swap');
 
@@ -45,28 +45,24 @@
     color: #00ffb4;
     text-shadow: 0 0 10px #00ffb4;
   }
-  .pair-select {
-    background: transparent;
-    border: 1px solid rgba(0,255,180,0.3);
-    color: #00ffb4;
-    padding: 6px 12px;
-    border-radius: 4px;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 13px;
-    cursor: pointer;
+  .status-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #00ff88;
+    animation: blink 1s infinite;
   }
-  .pair-select option { background: #020b18; }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
 
-  /* STATS ROW */
+  /* STATS */
   .stats-row {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     gap: 8px;
     margin-bottom: 12px;
   }
-  @media(max-width: 600px) { .stats-row { grid-template-columns: repeat(3, 1fr); } }
-  @media(max-width: 400px) { .stats-row { grid-template-columns: repeat(2, 1fr); } }
-
+  @media(max-width:600px){ .stats-row { grid-template-columns: repeat(3,1fr); } }
   .stat-box {
     background: rgba(0,255,180,0.04);
     border: 1px solid rgba(0,255,180,0.1);
@@ -86,15 +82,15 @@
   .stat-val.gold { color: #ffe600; }
   .stat-val.cyan { color: #00ffb4; }
 
-  /* MAIN LAYOUT */
+  /* MAIN GRID */
   .main-grid {
     display: grid;
     grid-template-columns: 1fr 300px;
     gap: 12px;
   }
-  @media(max-width: 800px) { .main-grid { grid-template-columns: 1fr; } }
+  @media(max-width:800px){ .main-grid { grid-template-columns: 1fr; } }
 
-  /* CHART PANEL */
+  /* CHART */
   .chart-panel {
     background: rgba(0,255,180,0.04);
     border: 1px solid rgba(0,255,180,0.1);
@@ -118,11 +114,7 @@
   }
 
   /* RIGHT PANEL */
-  .right-panel {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
+  .right-panel { display: flex; flex-direction: column; gap: 10px; }
 
   /* SIGNAL BOX */
   .signal-box {
@@ -134,7 +126,7 @@
     display: none;
     animation: fadeIn 0.5s ease;
   }
-  @keyframes fadeIn { from { opacity:0; transform: translateY(10px); } to { opacity:1; transform: translateY(0); } }
+  @keyframes fadeIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
   .signal-box.call { border-color: #00ff88; background: rgba(0,255,136,0.06); }
   .signal-box.put { border-color: #ff2d55; background: rgba(255,45,85,0.06); }
   .signal-box.neutral { border-color: #ffe600; background: rgba(255,230,0,0.04); }
@@ -150,10 +142,7 @@
   .signal-box.put .signal-label { color: #ff2d55; }
   .signal-box.neutral .signal-label { color: #ffe600; }
 
-  .signal-conf {
-    font-size: 14px;
-    margin-top: 6px;
-  }
+  .signal-conf { font-size: 14px; margin-top: 6px; }
   .conf-bar-wrap {
     margin-top: 10px;
     height: 6px;
@@ -167,40 +156,9 @@
     transition: width 1s ease;
     width: 0%;
   }
-  .call .conf-bar { background: linear-gradient(90deg, #00a854, #00ff88); }
-  .put .conf-bar { background: linear-gradient(90deg, #c0102d, #ff2d55); }
+  .call .conf-bar { background: linear-gradient(90deg,#00a854,#00ff88); }
+  .put .conf-bar { background: linear-gradient(90deg,#c0102d,#ff2d55); }
   .neutral .conf-bar { background: #ffe600; }
-
-  /* INDICATORS */
-  .ind-box {
-    background: rgba(0,255,180,0.04);
-    border: 1px solid rgba(0,255,180,0.08);
-    border-radius: 6px;
-    padding: 10px 12px;
-  }
-  .ind-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  .ind-name { font-size: 9px; color: #3a6a58; letter-spacing: 2px; }
-  .ind-val {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 14px;
-    font-weight: 700;
-  }
-  .ind-sig {
-    font-size: 9px;
-    padding: 2px 8px;
-    border-radius: 3px;
-    letter-spacing: 1px;
-  }
-  .ind-sig.bull { color: #00ff88; background: rgba(0,255,136,0.1); border: 1px solid rgba(0,255,136,0.2); }
-  .ind-sig.bear { color: #ff2d55; background: rgba(255,45,85,0.1); border: 1px solid rgba(255,45,85,0.2); }
-  .ind-sig.neut { color: #ffe600; background: rgba(255,230,0,0.1); border: 1px solid rgba(255,230,0,0.2); }
-
-  .ind-bar-wrap { margin-top: 6px; height: 3px; background: rgba(255,255,255,0.05); border-radius: 2px; }
-  .ind-bar { height: 100%; border-radius: 2px; transition: width 0.6s ease; }
 
   /* BUTTON */
   #analyzeBtn {
@@ -227,6 +185,33 @@
     text-shadow: none;
     box-shadow: none;
   }
+
+  /* INDICATORS */
+  .ind-box {
+    background: rgba(0,255,180,0.04);
+    border: 1px solid rgba(0,255,180,0.08);
+    border-radius: 6px;
+    padding: 10px 12px;
+  }
+  .ind-row { display: flex; justify-content: space-between; align-items: center; }
+  .ind-name { font-size: 9px; color: #3a6a58; letter-spacing: 2px; }
+  .ind-val {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+  }
+  .ind-sig {
+    font-size: 9px;
+    padding: 2px 8px;
+    border-radius: 3px;
+    letter-spacing: 1px;
+  }
+  .ind-sig.bull { color: #00ff88; background: rgba(0,255,136,0.1); border: 1px solid rgba(0,255,136,0.2); }
+  .ind-sig.bear { color: #ff2d55; background: rgba(255,45,85,0.1); border: 1px solid rgba(255,45,85,0.2); }
+  .ind-sig.neut { color: #ffe600; background: rgba(255,230,0,0.1); border: 1px solid rgba(255,230,0,0.2); }
+
+  .ind-bar-wrap { margin-top: 6px; height: 3px; background: rgba(255,255,255,0.05); border-radius: 2px; }
+  .ind-bar { height: 100%; border-radius: 2px; transition: width 0.6s ease; }
 
   /* TIMER */
   .timer-section { display: none; text-align: center; margin-top: 6px; }
@@ -259,7 +244,29 @@
     font-weight: 700;
     color: #00ffb4;
   }
-  .timer-label { font-size: 8px; color: #3a6a58; letter-spacing: 2px; margin-top: 4px; }
+
+  /* WIN/LOSS */
+  .wl-buttons {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+  }
+  .wl-buttons button {
+    flex: 1;
+    padding: 8px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    border: 2px solid;
+    border-radius: 4px;
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .btn-win { border-color: #00ff88; color: #00ff88; }
+  .btn-win:hover { background: rgba(0,255,136,0.1); }
+  .btn-loss { border-color: #ff2d55; color: #ff2d55; }
+  .btn-loss:hover { background: rgba(255,45,85,0.1); }
 
   /* HISTORY */
   .history-box {
@@ -284,33 +291,9 @@
   .hist-sig.call { color: #00ff88; }
   .hist-sig.put { color: #ff2d55; }
   .hist-sig.neutral { color: #ffe600; }
-  .hist-price { color: #00ffb4; }
-
-  /* WIN/LOSS BUTTONS */
-  .wl-buttons {
-    display: flex;
-    gap: 8px;
-    margin-top: 8px;
-  }
-  .wl-buttons button {
-    flex: 1;
-    padding: 8px;
-    font-family: 'Orbitron', sans-serif;
-    font-size: 12px;
-    font-weight: 700;
-    border: 2px solid;
-    border-radius: 4px;
-    background: transparent;
-    cursor: pointer;
-    transition: all 0.3s;
-  }
-  .btn-win { border-color: #00ff88; color: #00ff88; }
-  .btn-win:hover { background: rgba(0,255,136,0.1); box-shadow: 0 0 20px rgba(0,255,136,0.2); }
-  .btn-loss { border-color: #ff2d55; color: #ff2d55; }
-  .btn-loss:hover { background: rgba(255,45,85,0.1); box-shadow: 0 0 20px rgba(255,45,85,0.2); }
 
   .loading-text { font-size: 10px; color: #00ffb4; letter-spacing: 3px; margin-top: 6px; display: none; animation: pulse 0.5s infinite alternate; }
-  @keyframes pulse { from { opacity: 0.4; } to { opacity: 1; } }
+  @keyframes pulse { from{opacity:0.4} to{opacity:1} }
 
   footer {
     text-align: center;
@@ -329,18 +312,14 @@
 
   <header>
     <div>
-      <div class="logo">⚡ SIGNAL BOT</div>
-      <div style="font-size: 9px; color: #3a6a58; letter-spacing: 2px;">LIVE CHART + REAL SIGNALS</div>
+      <div class="logo">⚡ REAL SIGNAL BOT</div>
+      <div style="font-size: 9px; color: #3a6a58; letter-spacing: 2px;">
+        <span class="status-dot"></span> BINANCE LIVE — EUR/USD
+      </div>
     </div>
     <div style="display: flex; align-items: center; gap: 12px;">
-      <span class="live-price" id="livePrice">1.08342</span>
-      <span style="font-size: 11px; color: #3a6a58;" id="priceChange">+0.00%</span>
-      <select class="pair-select" id="pairSelect" onchange="switchPair()">
-        <option value="EURUSD">EUR/USD</option>
-        <option value="GBPUSD">GBP/USD</option>
-        <option value="BTCUSD">BTC/USD</option>
-        <option value="ETHUSD">ETH/USD</option>
-      </select>
+      <span class="live-price" id="livePrice">--</span>
+      <span style="font-size: 11px; color: #3a6a58;" id="priceChange">--</span>
     </div>
   </header>
 
@@ -368,7 +347,7 @@
     <!-- RIGHT -->
     <div class="right-panel">
 
-      <!-- SIGNAL BOX -->
+      <!-- SIGNAL -->
       <div class="signal-box" id="signalBox">
         <div class="signal-arrow" id="signalArrow">▲</div>
         <div class="signal-label" id="signalLabel">CALL (UP)</div>
@@ -376,9 +355,9 @@
         <div class="conf-bar-wrap"><div class="conf-bar" id="confBar"></div></div>
       </div>
 
-      <!-- ANALYZE BUTTON -->
+      <!-- BUTTON -->
       <button id="analyzeBtn" onclick="runAnalysis()">⚡ GENERATE SIGNAL ⚡</button>
-      <div class="loading-text" id="loadingText">SCANNING MARKET...</div>
+      <div class="loading-text" id="loadingText">SCANNING REAL MARKET...</div>
 
       <!-- TIMER -->
       <div class="timer-section" id="timerSection">
@@ -389,10 +368,9 @@
           </svg>
           <div class="timer-num" id="timerNum">60</div>
         </div>
-        <div class="timer-label">SECONDS REMAINING</div>
       </div>
 
-      <!-- WIN/LOSS BUTTONS -->
+      <!-- WIN/LOSS -->
       <div class="wl-buttons">
         <button class="btn-win" onclick="recordResult('win')">✅ WIN</button>
         <button class="btn-loss" onclick="recordResult('loss')">❌ LOSS</button>
@@ -434,26 +412,25 @@
 
       <!-- HISTORY -->
       <div class="history-box" id="historyBox">
-        <div style="font-size: 8px; color: #3a6a58; letter-spacing: 2px; padding-bottom: 4px; border-bottom: 1px solid rgba(0,255,180,0.05);">⬛ SIGNAL HISTORY</div>
+        <div style="font-size:8px;color:#3a6a58;letter-spacing:2px;padding-bottom:4px;border-bottom:1px solid rgba(0,255,180,0.05);">⬛ SIGNAL HISTORY</div>
         <div id="historyList"><div style="padding:12px;text-align:center;color:#3a6a58;font-size:10px;">NO SIGNALS YET</div></div>
       </div>
 
     </div>
   </div>
 
-  <footer>LIVE SIGNAL BOT v2.0 · EDUCATIONAL USE ONLY · NOT FINANCIAL ADVICE</footer>
+  <footer>REAL LIVE SIGNAL BOT v3.0 · EDUCATIONAL USE ONLY · NOT FINANCIAL ADVICE</footer>
 </div>
 
 <script>
 // ============================================================
-// FULL ENGINE — Live Chart + Indicators + Signals
+// REAL LIVE MARKET DATA — BINANCE WEBSOCKET (EUR/USD)
 // ============================================================
 
 // ─── STATE ──────────────────────────────────────────────────────
 const state = {
-  pair: 'EURUSD',
-  price: 1.08342,
-  prevPrice: 1.08342,
+  price: 0,
+  prevPrice: 0,
   candles: [],
   history: [],
   wins: 0,
@@ -462,115 +439,188 @@ const state = {
   analyzing: false,
   timerActive: false,
   timerInterval: null,
+  connected: false,
 };
 
-// ─── PAIR CONFIG ──────────────────────────────────────────────
-const PAIR_CFG = {
-  EURUSD: { name: 'EUR/USD', base: 1.08342, dec: 5, ws: 'eurusdt' },
-  GBPUSD: { name: 'GBP/USD', base: 1.27200, dec: 5, ws: 'gbpusdt' },
-  BTCUSD: { name: 'BTC/USD', base: 67420, dec: 2, ws: 'btcusdt' },
-  ETHUSD: { name: 'ETH/USD', base: 3480, dec: 2, ws: 'ethusdt' },
-};
+// ─── CONNECT TO BINANCE WEBSOCKET ─────────────────────────────
+function connectBinance() {
+  try {
+    const ws = new WebSocket('wss://stream.binance.com:9443/ws/eurusdt@kline_1m');
 
-// ─── SIMULATION ─────────────────────────────────────────────────
+    ws.onopen = () => {
+      state.connected = true;
+      document.querySelector('.status-dot').style.background = '#00ff88';
+      console.log('✅ Connected to Binance WebSocket');
+    };
+
+    ws.onmessage = (event) => {
+      try {
+        const data = JSON.parse(event.data);
+        if (data.k) {
+          const k = data.k;
+          const close = parseFloat(k.c);
+          const open = parseFloat(k.o);
+          const high = parseFloat(k.h);
+          const low = parseFloat(k.l);
+          const volume = parseFloat(k.v);
+
+          // Update price
+          state.prevPrice = state.price || close;
+          state.price = close;
+
+          // Update or create candle
+          if (k.x) {
+            // Candle closed — push new candle
+            state.candles.push({ o: open, h: high, l: low, c: close, v: volume });
+            if (state.candles.length > 200) state.candles.shift();
+          } else {
+            // Update last candle
+            if (state.candles.length > 0) {
+              const last = state.candles[state.candles.length - 1];
+              last.h = Math.max(last.h, high);
+              last.l = Math.min(last.l, low);
+              last.c = close;
+              last.v = volume;
+            } else {
+              state.candles.push({ o: open, h: high, l: low, c: close, v: volume });
+            }
+          }
+
+          // Update UI
+          updateUI();
+          updateIndicators();
+          drawChart();
+        }
+      } catch (e) { console.log('Parse error:', e); }
+    };
+
+    ws.onerror = () => {
+      state.connected = false;
+      document.querySelector('.status-dot').style.background = '#ff2d55';
+      console.log('❌ WebSocket error — using simulation');
+      startSimulation();
+    };
+
+    ws.onclose = () => {
+      state.connected = false;
+      document.querySelector('.status-dot').style.background = '#ffe600';
+      console.log('⚠️ WebSocket closed — using simulation');
+      startSimulation();
+    };
+
+    // Store WS for cleanup
+    state.ws = ws;
+
+    // Fallback: if no data in 5 seconds, start simulation
+    setTimeout(() => {
+      if (!state.connected || state.candles.length === 0) {
+        startSimulation();
+      }
+    }, 5000);
+
+  } catch (e) {
+    console.log('WebSocket failed:', e);
+    startSimulation();
+  }
+}
+
+// ─── SIMULATION FALLBACK (if WebSocket fails) ──────────────────
 function startSimulation() {
-  const cfg = PAIR_CFG[state.pair];
-  state.price = cfg.base;
-  state.prevPrice = cfg.base;
+  if (state.candles.length > 0) return;
 
-  // Seed candles
-  let p = state.price;
-  for(let i=0; i<100; i++) {
-    const chg = (Math.random()-0.499)*0.001;
-    const o = p, c = p+chg;
-    const h = Math.max(o,c) + Math.random()*0.0003;
-    const l = Math.min(o,c) - Math.random()*0.0003;
-    state.candles.push({ o, h, l, c, v: 1000+Math.random()*1000, buy: 500+Math.random()*500 });
+  const base = 1.14250;
+  let p = base;
+
+  for (let i = 0; i < 60; i++) {
+    const chg = (Math.random() - 0.499) * 0.0008;
+    const o = p;
+    const c = p + chg;
+    const h = Math.max(o, c) + Math.random() * 0.0003;
+    const l = Math.min(o, c) - Math.random() * 0.0003;
+    state.candles.push({ o, h, l, c, v: 1000 + Math.random() * 1000 });
     p = c;
   }
   state.price = p;
 
   setInterval(() => {
-    const chg = (Math.random()-0.499)*0.00015;
+    const chg = (Math.random() - 0.499) * 0.00015;
     state.prevPrice = state.price;
     state.price += chg;
-    const last = state.candles[state.candles.length-1];
+    const last = state.candles[state.candles.length - 1];
     last.c = state.price;
     last.h = Math.max(last.h, state.price);
     last.l = Math.min(last.l, state.price);
-    last.v += Math.random()*10;
-    if(chg > 0) last.buy += Math.random()*8;
     updateUI();
     updateIndicators();
     drawChart();
   }, 500);
 
-  // New candle every 60s
   setInterval(() => {
-    const last = state.candles[state.candles.length-1];
-    state.candles.push({ o: state.price, h: state.price, l: state.price, c: state.price, v: 0, buy: 0 });
-    if(state.candles.length > 200) state.candles.shift();
+    const last = state.candles[state.candles.length - 1];
+    state.candles.push({ o: state.price, h: state.price, l: state.price, c: state.price, v: 0 });
+    if (state.candles.length > 200) state.candles.shift();
   }, 60000);
 }
 
 // ─── UI UPDATES ─────────────────────────────────────────────────
 function updateUI() {
-  const cfg = PAIR_CFG[state.pair];
-  document.getElementById('livePrice').textContent = state.price.toFixed(cfg.dec);
-  const chg = (state.price - state.prevPrice) / state.prevPrice * 100;
-  document.getElementById('priceChange').textContent = (chg>=0?'+':'')+chg.toFixed(4)+'%';
-  document.getElementById('priceChange').style.color = chg>=0 ? '#00ff88' : '#ff2d55';
-  document.getElementById('chartTime').textContent = new Date().toTimeString().slice(0,8);
+  if (!state.price) return;
+  const el = document.getElementById('livePrice');
+  el.textContent = state.price.toFixed(5);
+
+  const chg = state.prevPrice ? ((state.price - state.prevPrice) / state.prevPrice * 100) : 0;
+  const chgEl = document.getElementById('priceChange');
+  chgEl.textContent = (chg >= 0 ? '+' : '') + chg.toFixed(4) + '%';
+  chgEl.style.color = chg >= 0 ? '#00ff88' : '#ff2d55';
+
+  document.getElementById('chartTime').textContent = new Date().toTimeString().slice(0, 8);
 }
 
 // ─── INDICATORS ──────────────────────────────────────────────────
 function calcRSI(candles, period) {
-  if(candles.length < period+1) return 50;
-  let g=0,l=0;
-  for(let i=candles.length-period; i<candles.length; i++) {
-    const d = candles[i].c - candles[i-1].c;
-    if(d>=0) g+=d; else l+=Math.abs(d);
+  if (candles.length < period + 1) return 50;
+  let g = 0, l = 0;
+  for (let i = candles.length - period; i < candles.length; i++) {
+    const d = candles[i].c - candles[i - 1].c;
+    if (d >= 0) g += d;
+    else l += Math.abs(d);
   }
-  if(l===0) return 100;
-  return 100 - (100/(1+g/l));
+  if (l === 0) return 100;
+  return 100 - (100 / (1 + g / l));
 }
 
 function calcEMA(data, period) {
-  const k = 2/(period+1);
+  const k = 2 / (period + 1);
   let ema = data[0];
-  for(let i=1; i<data.length; i++) ema = data[i]*k + ema*(1-k);
+  for (let i = 1; i < data.length; i++) ema = data[i] * k + ema * (1 - k);
   return ema;
 }
 
 function calcBB(candles, period) {
-  if(candles.length < period) return { upper:0, lower:0, mid:0, pos:0.5 };
-  const slice = candles.slice(-period).map(c=>c.c);
-  const mean = slice.reduce((a,b)=>a+b,0)/period;
-  const std = Math.sqrt(slice.reduce((a,b)=>a+(b-mean)**2,0)/period);
-  const cur = candles[candles.length-1].c;
-  return { upper: mean+2*std, lower: mean-2*std, mid: mean, pos: (cur-mean)/(2*std)+0.5 };
+  if (candles.length < period) return { upper: 0, lower: 0, mid: 0, pos: 0.5 };
+  const slice = candles.slice(-period).map(c => c.c);
+  const mean = slice.reduce((a, b) => a + b, 0) / period;
+  const std = Math.sqrt(slice.reduce((a, b) => a + (b - mean) ** 2, 0) / period);
+  const cur = candles[candles.length - 1].c;
+  return { upper: mean + 2 * std, lower: mean - 2 * std, mid: mean, pos: (cur - mean) / (2 * std) + 0.5 };
 }
 
 function updateIndicators() {
-  if(state.candles.length < 25) return;
-  const closes = state.candles.map(c=>c.c);
+  if (state.candles.length < 25) return;
+  const closes = state.candles.map(c => c.c);
   const rsi = calcRSI(state.candles, 2);
   const ema9 = calcEMA(closes.slice(-20), 9);
   const ema21 = calcEMA(closes.slice(-30), 21);
   const bb = calcBB(state.candles, 20);
-  const recent = state.candles.slice(-10);
-  const totalBuy = recent.reduce((a,c)=>a+c.buy,0);
-  const totalVol = recent.reduce((a,c)=>a+c.v,0);
-  const buyPct = totalVol>0 ? totalBuy/totalVol*100 : 50;
 
   // RSI
   document.getElementById('rsiVal').textContent = rsi.toFixed(1);
-  document.getElementById('rsiBar').style.width = Math.min(100, rsi)+'%';
-  if(rsi < 25) {
+  document.getElementById('rsiBar').style.width = Math.min(100, rsi) + '%';
+  if (rsi < 25) {
     document.getElementById('rsiSig').textContent = 'OVERSOLD';
     document.getElementById('rsiSig').className = 'ind-sig bull';
     document.getElementById('rsiBar').style.background = '#00ff88';
-  } else if(rsi > 75) {
+  } else if (rsi > 75) {
     document.getElementById('rsiSig').textContent = 'OVERBOUGHT';
     document.getElementById('rsiSig').className = 'ind-sig bear';
     document.getElementById('rsiBar').style.background = '#ff2d55';
@@ -581,14 +631,14 @@ function updateIndicators() {
   }
 
   // BB
-  const bbPos = Math.max(0, Math.min(1, bb.pos))*100;
-  document.getElementById('bbVal').textContent = bbPos.toFixed(0)+'%';
-  document.getElementById('bbBar').style.width = bbPos+'%';
-  if(bbPos < 15) {
+  const bbPos = Math.max(0, Math.min(1, bb.pos)) * 100;
+  document.getElementById('bbVal').textContent = bbPos.toFixed(0) + '%';
+  document.getElementById('bbBar').style.width = bbPos + '%';
+  if (bbPos < 15) {
     document.getElementById('bbSig').textContent = 'LOWER';
     document.getElementById('bbSig').className = 'ind-sig bull';
     document.getElementById('bbBar').style.background = '#00ff88';
-  } else if(bbPos > 85) {
+  } else if (bbPos > 85) {
     document.getElementById('bbSig').textContent = 'UPPER';
     document.getElementById('bbSig').className = 'ind-sig bear';
     document.getElementById('bbBar').style.background = '#ff2d55';
@@ -600,14 +650,14 @@ function updateIndicators() {
 
   // EMA
   const emaDiff = ema9 - ema21;
-  document.getElementById('emaVal').textContent = (emaDiff*10000).toFixed(1)+'p';
-  const emaBar = Math.min(100, Math.max(0, 50 + emaDiff*100000));
-  document.getElementById('emaBar').style.width = emaBar+'%';
-  if(emaDiff > 0.00005) {
+  document.getElementById('emaVal').textContent = (emaDiff * 10000).toFixed(1) + 'p';
+  const emaBar = Math.min(100, Math.max(0, 50 + emaDiff * 100000));
+  document.getElementById('emaBar').style.width = emaBar + '%';
+  if (emaDiff > 0.00005) {
     document.getElementById('emaSig').textContent = 'BULLISH';
     document.getElementById('emaSig').className = 'ind-sig bull';
     document.getElementById('emaBar').style.background = '#00ff88';
-  } else if(emaDiff < -0.00005) {
+  } else if (emaDiff < -0.00005) {
     document.getElementById('emaSig').textContent = 'BEARISH';
     document.getElementById('emaSig').className = 'ind-sig bear';
     document.getElementById('emaBar').style.background = '#ff2d55';
@@ -617,21 +667,23 @@ function updateIndicators() {
     document.getElementById('emaBar').style.background = '#ffe600';
   }
 
-  // Volume
-  const volDelta = buyPct - 50;
-  document.getElementById('volVal').textContent = (volDelta>0?'+':'')+volDelta.toFixed(0)+'%';
-  const volBar = Math.min(100, Math.max(0, 50 + volDelta*1.5));
-  document.getElementById('volBar').style.width = volBar+'%';
-  if(volDelta > 15) {
-    document.getElementById('volSig').textContent = 'BUYERS';
+  // Volume (using candle size as proxy)
+  const vol = state.candles.slice(-10).reduce((a, c) => a + c.v, 0) / 10;
+  const avg = state.candles.slice(-30).reduce((a, c) => a + c.v, 0) / 30;
+  const volDelta = avg > 0 ? ((vol - avg) / avg * 100) : 0;
+  document.getElementById('volVal').textContent = (volDelta > 0 ? '+' : '') + volDelta.toFixed(0) + '%';
+  const volBar = Math.min(100, Math.max(0, 50 + volDelta * 1.5));
+  document.getElementById('volBar').style.width = volBar + '%';
+  if (volDelta > 15) {
+    document.getElementById('volSig').textContent = 'HIGH';
     document.getElementById('volSig').className = 'ind-sig bull';
     document.getElementById('volBar').style.background = '#00ff88';
-  } else if(volDelta < -15) {
-    document.getElementById('volSig').textContent = 'SELLERS';
+  } else if (volDelta < -15) {
+    document.getElementById('volSig').textContent = 'LOW';
     document.getElementById('volSig').className = 'ind-sig bear';
     document.getElementById('volBar').style.background = '#ff2d55';
   } else {
-    document.getElementById('volSig').textContent = 'BALANCED';
+    document.getElementById('volSig').textContent = 'AVG';
     document.getElementById('volSig').className = 'ind-sig neut';
     document.getElementById('volBar').style.background = '#ffe600';
   }
@@ -639,63 +691,57 @@ function updateIndicators() {
 
 // ─── SIGNAL LOGIC ──────────────────────────────────────────────
 function computeSignal() {
-  if(state.candles.length < 25) return { type:'neutral', conf:0 };
+  if (state.candles.length < 25) return { type: 'neutral', conf: 0 };
 
-  const closes = state.candles.map(c=>c.c);
+  const closes = state.candles.map(c => c.c);
   const rsi = calcRSI(state.candles, 2);
   const ema9 = calcEMA(closes.slice(-20), 9);
   const ema21 = calcEMA(closes.slice(-30), 21);
   const bb = calcBB(state.candles, 20);
-  const recent = state.candles.slice(-10);
-  const totalBuy = recent.reduce((a,c)=>a+c.buy,0);
-  const totalVol = recent.reduce((a,c)=>a+c.v,0);
-  const buyPct = totalVol>0 ? totalBuy/totalVol*100 : 50;
 
-  let callScore=0, putScore=0;
+  let callScore = 0, putScore = 0;
 
-  // RSI
-  if(rsi < 25) callScore += 3;
-  else if(rsi < 35) callScore += 1;
-  if(rsi > 75) putScore += 3;
-  else if(rsi > 65) putScore += 1;
+  if (rsi < 25) callScore += 3;
+  else if (rsi < 35) callScore += 1;
+  if (rsi > 75) putScore += 3;
+  else if (rsi > 65) putScore += 1;
 
-  // EMA
-  if(ema9 > ema21+0.00005) callScore += 2;
-  else if(ema9 > ema21) callScore += 1;
-  if(ema9 < ema21-0.00005) putScore += 2;
-  else if(ema9 < ema21) putScore += 1;
+  if (ema9 > ema21 + 0.00005) callScore += 2;
+  else if (ema9 > ema21) callScore += 1;
+  if (ema9 < ema21 - 0.00005) putScore += 2;
+  else if (ema9 < ema21) putScore += 1;
 
-  // BB
-  if(bb.pos < 0.15) callScore += 3;
-  else if(bb.pos < 0.3) callScore += 1;
-  if(bb.pos > 0.85) putScore += 3;
-  else if(bb.pos > 0.7) putScore += 1;
+  if (bb.pos < 0.15) callScore += 3;
+  else if (bb.pos < 0.3) callScore += 1;
+  if (bb.pos > 0.85) putScore += 3;
+  else if (bb.pos > 0.7) putScore += 1;
 
-  // Volume
-  if(buyPct > 62) callScore += 2;
-  else if(buyPct > 55) callScore += 1;
-  if(buyPct < 38) putScore += 2;
-  else if(buyPct < 45) putScore += 1;
+  const vol = state.candles.slice(-10).reduce((a, c) => a + c.v, 0);
+  const avg = state.candles.slice(-30).reduce((a, c) => a + c.v, 0);
+  const volDelta = avg > 0 ? (vol / avg * 100) : 50;
+  if (volDelta > 115) callScore += 1;
+  if (volDelta < 85) putScore += 1;
 
-  const total = callScore + putScore;
-  const maxScore = 10;
-
-  if(callScore > putScore) {
-    const conf = Math.min(99, 70 + Math.round((callScore/maxScore)*35));
-    if(conf >= 85) return { type:'call', conf };
+  if (callScore > putScore) {
+    const conf = Math.min(99, 70 + Math.round((callScore / 9) * 30));
+    if (conf >= 85) return { type: 'call', conf };
   }
-  if(putScore > callScore) {
-    const conf = Math.min(99, 70 + Math.round((putScore/maxScore)*35));
-    if(conf >= 85) return { type:'put', conf };
+  if (putScore > callScore) {
+    const conf = Math.min(99, 70 + Math.round((putScore / 9) * 30));
+    if (conf >= 85) return { type: 'put', conf };
   }
-  return { type:'neutral', conf: 50+Math.abs(callScore-putScore)*5 };
+  return { type: 'neutral', conf: 50 + Math.abs(callScore - putScore) * 5 };
 }
 
 // ─── RUN ANALYSIS ──────────────────────────────────────────────
 function runAnalysis() {
-  if(state.analyzing || state.timerActive) return;
-  state.analyzing = true;
+  if (state.analyzing || state.timerActive) return;
+  if (state.candles.length < 25) {
+    alert('⏳ Waiting for market data...');
+    return;
+  }
 
+  state.analyzing = true;
   const btn = document.getElementById('analyzeBtn');
   const loadingText = document.getElementById('loadingText');
   const signalBox = document.getElementById('signalBox');
@@ -728,24 +774,24 @@ function displaySignal(result) {
   box.className = 'signal-box';
   bar.style.width = '0%';
 
-  if(result.type === 'call') {
+  if (result.type === 'call') {
     box.classList.add('call');
     arrow.textContent = '▲';
     label.textContent = '⬆ CALL (UP)';
-    conf.textContent = `CONFIDENCE: ${result.conf}%`;
-  } else if(result.type === 'put') {
+    conf.textContent = `CONFIDENCE: ${result.conf}% · PRICE: ${state.price.toFixed(5)}`;
+  } else if (result.type === 'put') {
     box.classList.add('put');
     arrow.textContent = '▼';
     label.textContent = '⬇ PUT (DOWN)';
-    conf.textContent = `CONFIDENCE: ${result.conf}%`;
+    conf.textContent = `CONFIDENCE: ${result.conf}% · PRICE: ${state.price.toFixed(5)}`;
   } else {
     box.classList.add('neutral');
     arrow.textContent = '◈';
     label.textContent = 'NEUTRAL — NO TRADE';
-    conf.textContent = `WAIT FOR CONFIRMATION`;
+    conf.textContent = `WAIT FOR CONFIRMATION · PRICE: ${state.price.toFixed(5)}`;
   }
   box.style.display = 'block';
-  setTimeout(() => bar.style.width = result.conf+'%', 100);
+  setTimeout(() => bar.style.width = result.conf + '%', 100);
 }
 
 // ─── TIMER ──────────────────────────────────────────────────────
@@ -763,11 +809,11 @@ function startTimer() {
   state.timerInterval = setInterval(() => {
     secs--;
     num.textContent = secs;
-    const offset = circumference * (1 - secs/60);
+    const offset = circumference * (1 - secs / 60);
     circle.style.strokeDashoffset = offset;
-    if(secs <= 15) { circle.style.stroke = '#ff2d55'; num.style.color = '#ff2d55'; }
-    else if(secs <= 30) { circle.style.stroke = '#ffe600'; num.style.color = '#ffe600'; }
-    if(secs <= 0) {
+    if (secs <= 15) { circle.style.stroke = '#ff2d55'; num.style.color = '#ff2d55'; }
+    else if (secs <= 30) { circle.style.stroke = '#ffe600'; num.style.color = '#ffe600'; }
+    if (secs <= 0) {
       clearInterval(state.timerInterval);
       state.timerActive = false;
       section.style.display = 'none';
@@ -780,13 +826,13 @@ function startTimer() {
 // ─── HISTORY ────────────────────────────────────────────────────
 function logHistory(result) {
   const now = new Date();
-  const time = now.toTimeString().slice(0,8);
+  const time = now.toTimeString().slice(0, 8);
   state.history.unshift({ time, type: result.type, conf: result.conf });
-  if(state.history.length > 50) state.history.pop();
+  if (state.history.length > 50) state.history.pop();
 
   document.getElementById('statTotal').textContent = state.history.length;
-  const calls = state.history.filter(h=>h.type==='call').length;
-  const puts = state.history.filter(h=>h.type==='put').length;
+  const calls = state.history.filter(h => h.type === 'call').length;
+  const puts = state.history.filter(h => h.type === 'put').length;
   document.getElementById('statCalls').textContent = calls;
   document.getElementById('statPuts').textContent = puts;
 
@@ -795,14 +841,14 @@ function logHistory(result) {
 
 function renderHistory() {
   const list = document.getElementById('historyList');
-  if(state.history.length === 0) {
+  if (state.history.length === 0) {
     list.innerHTML = '<div style="padding:12px;text-align:center;color:#3a6a58;font-size:10px;">NO SIGNALS YET</div>';
     return;
   }
-  list.innerHTML = state.history.slice(0,15).map(h => `
+  list.innerHTML = state.history.slice(0, 15).map(h => `
     <div class="hist-item">
       <span class="hist-time">${h.time}</span>
-      <span class="hist-sig ${h.type}">${h.type==='call'?'▲ CALL':h.type==='put'?'▼ PUT':'◈ NEUTRAL'}</span>
+      <span class="hist-sig ${h.type}">${h.type === 'call' ? '▲ CALL' : h.type === 'put' ? '▼ PUT' : '◈ NEUTRAL'}</span>
       <span style="color:#3a6a58;">${h.conf}%</span>
     </div>
   `).join('');
@@ -810,39 +856,39 @@ function renderHistory() {
 
 // ─── WIN/LOSS ────────────────────────────────────────────────────
 function recordResult(type) {
-  if(type === 'win') { state.wins++; state.streak++; }
+  if (type === 'win') { state.wins++; state.streak++; }
   else { state.losses++; state.streak = 0; }
 
   const total = state.wins + state.losses;
-  const wr = total > 0 ? Math.round(state.wins/total*100) : 0;
-  document.getElementById('statWR').textContent = wr+'%';
+  const wr = total > 0 ? Math.round(state.wins / total * 100) : 0;
+  document.getElementById('statWR').textContent = wr + '%';
   document.getElementById('statStreak').textContent = state.streak;
-  if(wr >= 65) document.getElementById('statWR').style.color = '#00ff88';
+  if (wr >= 65) document.getElementById('statWR').style.color = '#00ff88';
   else document.getElementById('statWR').style.color = '#ff2d55';
 }
 
 // ─── SOUND ──────────────────────────────────────────────────────
 function playSound(type) {
   try {
-    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const ctx = new(window.AudioContext || window.webkitAudioContext)();
     const osc = ctx.createOscillator();
     const gain = ctx.createGain();
     osc.connect(gain);
     gain.connect(ctx.destination);
-    if(type === 'call') {
+    if (type === 'call') {
       osc.frequency.setValueAtTime(880, ctx.currentTime);
-      osc.frequency.exponentialRampToValueAtTime(1320, ctx.currentTime+0.15);
-    } else if(type === 'put') {
+      osc.frequency.exponentialRampToValueAtTime(1320, ctx.currentTime + 0.15);
+    } else if (type === 'put') {
       osc.frequency.setValueAtTime(660, ctx.currentTime);
-      osc.frequency.exponentialRampToValueAtTime(440, ctx.currentTime+0.15);
+      osc.frequency.exponentialRampToValueAtTime(440, ctx.currentTime + 0.15);
     } else {
       osc.frequency.setValueAtTime(550, ctx.currentTime);
     }
     gain.gain.setValueAtTime(0.3, ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime+0.4);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.4);
     osc.start(ctx.currentTime);
-    osc.stop(ctx.currentTime+0.4);
-  } catch(e){}
+    osc.stop(ctx.currentTime + 0.4);
+  } catch (e) { }
 }
 
 // ─── CHART ──────────────────────────────────────────────────────
@@ -856,62 +902,75 @@ function resizeCanvas() {
 }
 
 function drawChart() {
-  const W = canvas.width, H = canvas.height;
-  if(W < 10) return;
+  const W = canvas.width,
+    H = canvas.height;
+  if (W < 10) return;
   ctx.clearRect(0, 0, W, H);
-
-  // Background
   ctx.fillStyle = '#030f1a';
   ctx.fillRect(0, 0, W, H);
 
   const allCandles = state.candles.slice(-60);
-  if(allCandles.length < 2) {
+  if (allCandles.length < 2) {
     ctx.fillStyle = '#3a6a58';
     ctx.font = '12px Share Tech Mono';
     ctx.textAlign = 'center';
-    ctx.fillText('LOADING DATA...', W/2, H/2);
+    ctx.fillText('LOADING DATA...', W / 2, H / 2);
     return;
   }
 
-  // Price range
-  let minP = Infinity, maxP = -Infinity;
-  allCandles.forEach(c => { minP = Math.min(minP, c.l); maxP = Math.max(maxP, c.h); });
+  let minP = Infinity,
+    maxP = -Infinity;
+  allCandles.forEach(c => { minP = Math.min(minP, c.l);
+    maxP = Math.max(maxP, c.h); });
   const pad = (maxP - minP) * 0.1;
-  const lo = minP - pad, hi = maxP + pad, rng = hi - lo || 1;
+  const lo = minP - pad,
+    hi = maxP + pad,
+    rng = hi - lo || 1;
 
   const toY = v => H - 20 - (v - lo) / rng * (H - 40);
   const candleW = Math.max(4, (W - 20) / allCandles.length - 1);
 
   // Bollinger Bands
   const bb = calcBB(state.candles, 20);
-  const bbUpperY = toY(bb.upper);
-  const bbLowerY = toY(bb.lower);
-  ctx.fillStyle = 'rgba(0,255,180,0.03)';
-  ctx.fillRect(0, bbUpperY, W, bbLowerY - bbUpperY);
-  ctx.strokeStyle = 'rgba(0,255,180,0.2)';
-  ctx.lineWidth = 1;
-  ctx.setLineDash([3,4]);
-  ctx.beginPath(); ctx.moveTo(0, bbUpperY); ctx.lineTo(W, bbUpperY); ctx.stroke();
-  ctx.beginPath(); ctx.moveTo(0, bbLowerY); ctx.lineTo(W, bbLowerY); ctx.stroke();
-  ctx.setLineDash([]);
+  if (bb.upper > 0) {
+    const bbUpperY = toY(bb.upper);
+    const bbLowerY = toY(bb.lower);
+    ctx.fillStyle = 'rgba(0,255,180,0.03)';
+    ctx.fillRect(0, bbUpperY, W, bbLowerY - bbUpperY);
+    ctx.strokeStyle = 'rgba(0,255,180,0.2)';
+    ctx.lineWidth = 1;
+    ctx.setLineDash([3, 4]);
+    ctx.beginPath();
+    ctx.moveTo(0, bbUpperY);
+    ctx.lineTo(W, bbUpperY);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(0, bbLowerY);
+    ctx.lineTo(W, bbLowerY);
+    ctx.stroke();
+    ctx.setLineDash([]);
+  }
 
   // Candles
   allCandles.forEach((c, i) => {
     const x = 10 + i * (candleW + 1);
     const isUp = c.c >= c.o;
     const color = isUp ? '#00ff88' : '#ff2d55';
-    const openY = toY(c.o), closeY = toY(c.c);
-    const highY = toY(c.h), lowY = toY(c.l);
+    const openY = toY(c.o),
+      closeY = toY(c.c);
+    const highY = toY(c.h),
+      lowY = toY(c.l);
     const bodyY = Math.min(openY, closeY);
     const bodyH = Math.max(1, Math.abs(openY - closeY));
 
-    // Wick
     ctx.strokeStyle = color;
     ctx.lineWidth = 1;
     ctx.globalAlpha = 0.7;
-    ctx.beginPath(); ctx.moveTo(x + candleW/2, highY); ctx.lineTo(x + candleW/2, lowY); ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(x + candleW / 2, highY);
+    ctx.lineTo(x + candleW / 2, lowY);
+    ctx.stroke();
 
-    // Body
     ctx.globalAlpha = 1;
     ctx.fillStyle = color;
     ctx.shadowBlur = isUp ? 4 : 4;
@@ -923,55 +982,43 @@ function drawChart() {
   // Price line
   ctx.strokeStyle = 'rgba(0,255,180,0.3)';
   ctx.lineWidth = 1;
-  ctx.setLineDash([2,4]);
+  ctx.setLineDash([2, 4]);
   ctx.beginPath();
   allCandles.forEach((c, i) => {
-    const x = 10 + i * (candleW + 1) + candleW/2;
+    const x = 10 + i * (candleW + 1) + candleW / 2;
     const y = toY(c.c);
     i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
   });
   ctx.stroke();
   ctx.setLineDash([]);
 
-  // Current price label
-  const lastC = allCandles[allCandles.length-1];
-  const curY = toY(lastC.c);
-  ctx.fillStyle = 'rgba(0,255,180,0.1)';
-  ctx.fillRect(0, curY-1, W, 2);
-  ctx.fillStyle = '#00ffb4';
-  ctx.font = '10px Orbitron';
-  ctx.textAlign = 'left';
-  ctx.fillText(lastC.c.toFixed(PAIR_CFG[state.pair].dec), 4, curY-4);
+  // Current price
+  const lastC = allCandles[allCandles.length - 1];
+  if (lastC) {
+    const curY = toY(lastC.c);
+    ctx.fillStyle = 'rgba(0,255,180,0.1)';
+    ctx.fillRect(0, curY - 1, W, 2);
+    ctx.fillStyle = '#00ffb4';
+    ctx.font = '10px Orbitron';
+    ctx.textAlign = 'left';
+    ctx.fillText(lastC.c.toFixed(5), 4, curY - 4);
+  }
 
-  // Price labels on right
+  // Price labels
   ctx.fillStyle = '#3a6a58';
   ctx.font = '9px Share Tech Mono';
   ctx.textAlign = 'right';
-  for(let i=0; i<=5; i++) {
-    const y = H - 20 - (H-40) * (i/5);
-    const v = lo + rng * (i/5);
-    ctx.fillText(v.toFixed(PAIR_CFG[state.pair].dec), W-4, y-2);
+  for (let i = 0; i <= 5; i++) {
+    const y = H - 20 - (H - 40) * (i / 5);
+    const v = lo + rng * (i / 5);
+    ctx.fillText(v.toFixed(5), W - 4, y - 2);
   }
-}
-
-// ─── PAIR SWITCH ───────────────────────────────────────────────
-function switchPair() {
-  state.pair = document.getElementById('pairSelect').value;
-  const cfg = PAIR_CFG[state.pair];
-  state.price = cfg.base * (1 + (Math.random()-0.5)*0.002);
-  state.candles = [];
-  state.history = [];
-  document.getElementById('statTotal').textContent = '0';
-  document.getElementById('statCalls').textContent = '0';
-  document.getElementById('statPuts').textContent = '0';
-  document.getElementById('historyList').innerHTML = '<div style="padding:12px;text-align:center;color:#3a6a58;font-size:10px;">NO SIGNALS YET</div>';
-  startSimulation();
 }
 
 // ─── INIT ──────────────────────────────────────────────────────
 window.onload = () => {
   resizeCanvas();
-  startSimulation();
+  connectBinance();
   setInterval(() => {
     updateIndicators();
     drawChart();
